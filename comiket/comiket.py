@@ -21,7 +21,7 @@ for friend_id in tweepy.Cursor(api.friends_ids, user_id=my_info.id).items():
 comiket_user = []
 for i in range(0, len(follow_ids), 100):
 	for user in api.lookup_users(user_ids=follow_ids[i:i+100]):
-		if bool(re.search('.*(東|西).*[0-9０-９].*', user.name)):
+		if bool(re.search('.*(東|西|南).*[0-9０-９].*', user.name)):
 			comiket_user.append(user.name)
 
 with open('./comiket.txt', mode='w') as output:
