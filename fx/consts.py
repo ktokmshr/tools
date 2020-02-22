@@ -1,4 +1,4 @@
-class Granularity(object):
+class Granularity():
     M5 = "M5"
     M15 = "M15"
     H1 = "H1"

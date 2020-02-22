@@ -2,6 +2,7 @@ from oandapyV20.endpoints.instruments import InstrumentsCandles
 import oandapyV20
 import oanda_access_key as oak
 import consts
+import db_access
 
 from dateutil.relativedelta import relativedelta
 import datetime
@@ -14,7 +15,7 @@ access_token = oak.PERSONAL_ACCESS_TOKEN
 api = oandapyV20.API(access_token = access_token, environment = "practice")
 
 datetime_format = "%Y-%m-%dT%H:%M:%S.%f%z"
-base_datetime = datetime.datetime(year=2017, month=1, day=1)
+base_datetime = datetime.datetime(year=2019, month=1, day=1)
 
 ic = InstrumentsCandles(
 		instrument="USD_JPY",
@@ -27,9 +28,6 @@ ic = InstrumentsCandles(
 	)
 
 api.request(ic)
-
-# with open("./" + base_datetime.strftime(%Y-%m-%d) + "_H4.json", "w") as f:
-# 	f.write(json.dumps(ic.response, indent=4))
 
 data = []
 for candle in ic.response["candles"]:
@@ -51,3 +49,5 @@ df.index = pd.to_datetime(df.index)
 print(df.head())
 print(df.tail())
 
+engine = db_access.get_engine()
+df.to_sql('usd_jpy', con=engine, if_exists='append')
