@@ -1,7 +1,7 @@
 import re
 
 import tweepy
-import twitter_access_key as tak
+from comiket import twitter_access_key as tak
 
 CONSUMER_API_KEYS = tak.CONSUMER_API_KEYS
 CONSUMER_SECRET_KEY = tak.CONSUMER_SECRET_KEY
