@@ -7,3 +7,7 @@ class Granularity():
     D = "D"
     W = "W"
     M = "M"
+
+class BBand():
+	BB_BAND_WINDOW = 10
+	SIGMA_2 = 2
