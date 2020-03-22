@@ -23,41 +23,41 @@ end_datetime = datetime.datetime(year=2020, month=3, day=6)
 date_window = 2
 
 while (start_datetime + relativedelta(days=date_window)) <= end_datetime:
-	try:
-		ic = InstrumentsCandles(
-				instrument="USD_JPY",
-				params={
-					"granularity": consts.Granularity.D,
-					"alignmentTimezone": "Japan",
-					# "count": 5000
-					"from": start_datetime.strftime(datetime_format),
-					"to": (start_datetime + relativedelta(days=date_window) - relativedelta(seconds=1)).strftime(datetime_format)
-				}
-			)
-		start_datetime = start_datetime + relativedelta(days=date_window)
-		api.request(ic)
-		data = []
-		for candle in ic.response["candles"]:
-			data.append(
-				[
-					candle['time'],
-					candle['volume'],
-					candle['mid']['o'],
-					candle['mid']['h'],
-					candle['mid']['l'],
-					candle['mid']['c']
-				]
-			)
-		time.sleep(1)
-		df = pd.DataFrame(data)
-		if(df.empty):
-			continue
-		df.columns = ['datetime', 'volume', 'open', 'high', 'low', 'close']
-		df = df.set_index('datetime')
-		df.index = pd.to_datetime(df.index)
-		# print(df.head())
-		# print(df.isna().all())
-		engine = db_access.get_engine()
-		df.to_sql('usd_jpy_d', con=engine, if_exists='append')
-	except Exception as e:
-		print(e)
+  try:
+    ic = InstrumentsCandles(
+        instrument="USD_JPY",
+        params={
+          "granularity": consts.Granularity.D,
+          "alignmentTimezone": "Japan",
+          # "count": 5000
+          "from": start_datetime.strftime(datetime_format),
+          "to": (start_datetime + relativedelta(days=date_window) - relativedelta(seconds=1)).strftime(datetime_format)
+        }
+      )
+    start_datetime = start_datetime + relativedelta(days=date_window)
+    api.request(ic)
+    data = []
+    for candle in ic.response["candles"]:
+      data.append(
+        [
+          candle['time'],
+          candle['volume'],
+          candle['mid']['o'],
+          candle['mid']['h'],
+          candle['mid']['l'],
+          candle['mid']['c']
+        ]
+      )
+    time.sleep(1)
+    df = pd.DataFrame(data)
+    if(df.empty):
+      continue
+    df.columns = ['datetime', 'volume', 'open', 'high', 'low', 'close']
+    df = df.set_index('datetime')
+    df.index = pd.to_datetime(df.index)
+    # print(df.head())
+    # print(df.isna().all())
+    engine = db_access.get_engine()
+    df.to_sql('usd_jpy_d', con=engine, if_exists='append')
+  except Exception as e:
+    print(e)
