@@ -27,7 +27,7 @@ class ImageDownloader():
   def search(self, user_id=None):
     try:
       if(user_id is None):
-        raise Exception('user is None and keyword is None')
+        raise Exception('user_id is None')
       
       max_id = None
       media_url_set = set()
